@@ -4,12 +4,15 @@ import { Store } from '@ngrx/store';
 import { register } from '../../store/actions';
 import { RegisterRequestIntrface } from '../../types/registerRequest.interface';
 import { RouterLink } from '@angular/router';
+import { selectIsSubmitting } from '../../store/selectors';
+import { AuthStateInterface } from '../../types/authState.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'mc-register',
   templateUrl: './register.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink]
+  imports: [ReactiveFormsModule, RouterLink, CommonModule]
 })
 export class RegisterComponent {
 
@@ -19,13 +22,15 @@ export class RegisterComponent {
     password: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder, private store: Store) {}
+  isSubmitting$ = this.store.select(selectIsSubmitting);
+
+  constructor(private fb: FormBuilder, private store: Store<{auth: AuthStateInterface}>) {}
 
   onSubmit(){
     console.log(this.form.getRawValue());
     const request: RegisterRequestIntrface = {
       user: this.form.getRawValue(),
     }
-    this.store.dispatch(register({request}))
+    this.store.dispatch(register({request}));
   }
 }
