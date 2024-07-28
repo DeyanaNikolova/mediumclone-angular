@@ -7,15 +7,15 @@ import { RouterLink } from '@angular/router';
 import { selectIsSubmitting } from '../../store/reducers';
 import { AuthStateInterface } from '../../types/authState.interface';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'mc-register',
   templateUrl: './register.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, CommonModule]
+  imports: [ReactiveFormsModule, RouterLink, CommonModule],
 })
 export class RegisterComponent {
-
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
     email: ['', Validators.required],
@@ -24,13 +24,13 @@ export class RegisterComponent {
 
   isSubmitting$ = this.store.select(selectIsSubmitting);
 
-  constructor(private fb: FormBuilder, private store: Store<{auth: AuthStateInterface}>) {}
+  constructor( private fb: FormBuilder, private store: Store) {}
 
-  onSubmit(){
+  onSubmit() {
     console.log(this.form.getRawValue());
     const request: RegisterRequestIntrface = {
       user: this.form.getRawValue(),
-    }
-    this.store.dispatch(register({request}));
+    };
+    this.store.dispatch(register({ request }));
   }
 }
