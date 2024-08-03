@@ -10,6 +10,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideEffects } from '@ngrx/effects';
 import * as authEffects from './app/auth/store/effects';
 
+
 bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(),
